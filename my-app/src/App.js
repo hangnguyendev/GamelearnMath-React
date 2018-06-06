@@ -14,6 +14,7 @@ class App extends React.Component{
         
         this.handleClick = this.handleClick.bind(this);
         this.getSum = this.getSum.bind(this);
+        this.removeButton = this.removeButton.bind(this);
       }
       
         printStar=()=>{   
@@ -32,9 +33,11 @@ class App extends React.Component{
             this.state.choosenumber =this.state.choosenumber.map(Number);
             const a=this.state.choosenumber.reduce(this.getSum);
             
+            
+            this.setState({ totalNumber:a});
             console.log(a);
             // {this.printstar(random)};
-            // console.log({this.state.totalNumber});
+            // console.log(this.state.totalNumber);
         }
         getSum(total, num) {
             return total + num;
@@ -51,12 +54,24 @@ class App extends React.Component{
             // console.log(this.state.choosenumber,number);
             return 0;
         } 
-    
+        
+        removeButton=(e)=>{
+            // console.log(this.state.choosenumber);
+            let number=e.target.value;
+            // console.log(this.state.choosenumber);
+            let a= this.state.choosenumber.indexOf(number);
+            this.state.choosenumber.splice(a, 1);
+            this.setState({choosenumber: this.state.choosenumber});
+            
+          
+
+        }
         renderChooseButton() {
+            console.log(this.state.choosenumber);
             return (
                 <div>
                     {this.state.choosenumber.map(item => {
-                    return <button type="button" className="btn btn-default" value={item} onClick={this.removeButton}>{item}</button>
+                    return <button type="button" className="btn btn-default" value={item} onClick={(e) =>this.removeButton(e)}>{item}</button>
                     })}
                 </div>
             );
@@ -83,15 +98,6 @@ class App extends React.Component{
                             <button className="btn default" value={item} onClick={(e) => this.onClickBtn(e)}> {item} </button>
                                                 ))}
                         
-                        {/* <button className="btn default" value="1" onClick={this.createBtn()}> 1 </button>
-                        <button className="btn default" value="2" onClick={this.createBtn()}> 2 </button>
-                        <button className="btn default" value="3" onClick={this.createBtn()}> 3 </button>
-                        <button className="btn default" value="4" onClick={this.createBtn()}> 4 </button>
-                        <button className="btn default" value="5" onClick={this.createBtn()}> 5 </button>
-                        <button className="btn default" value="6" onClick={this.createBtn()}> 6 </button>
-                        <button className="btn default" value="7" onClick={this.createBtn()}> 7 </button>
-                        <button className="btn default" value="8" onClick={this.createBtn()}> 8 </button>
-                        <button className="btn default" value="9" onClick={this.createBtn()}> 9 </button> */}
                     </div>
                     
                 </div>
