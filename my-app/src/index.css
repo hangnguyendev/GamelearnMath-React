@@ -6,8 +6,8 @@ body {
 }
 .button-below{
    margin-left: 20px;
-   margin-top: 30%;
-   padding: 10px;
+   /* margin-top: 10%; */
+   /* padding: 10px; */
 }
 .button-below button{
   padding: 10px;
@@ -17,7 +17,7 @@ body {
 .center{
   max-width: 50px;
  
-  margin:150px;
+  /* margin:150px; */
   margin-left: 50%;
 }
 .default{
@@ -32,5 +32,5 @@ body {
 .right-content{
   margin-left: 60%;
 
-  margin-top:150px;
+  /* margin-top:150px; */
 }
