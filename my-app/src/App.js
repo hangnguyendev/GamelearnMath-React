@@ -53,11 +53,13 @@ class App extends React.Component {
         </div>
       );
     } else if (this.state.choosednumber.length === 9) {
+      clearInterval(this.timer);
       return (
         <div className="start_game">
           <p>
             <h1>Congratulation </h1>
           </p>
+
           <button onClick={this.restart}> RESTART GAME </button>
         </div>
       );
@@ -68,12 +70,13 @@ class App extends React.Component {
     this.setState({ start_game: true });
     this.setState({ end_game: true });
     clearInterval(this.timer);
-    this.setState({ choosednumber: [] });
-    this.setState({ choosenumber: [] });
+
     this.timer = 0;
     this.setState({ seconds: 11 });
     this.startTimer();
     this.setState({ countReset: 5 });
+    this.setState({ choosednumber: [] });
+    this.setState({ choosenumber: [] });
   }
 
   secondsToTime(secs) {

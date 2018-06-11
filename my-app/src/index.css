@@ -49,13 +49,13 @@ body {
 
   /* margin-top:150px; */
 }
-.timer {
+button {
   margin-left: 10px;
   margin-top: 10px;
   background-color: darkgoldenrod;
   color: rebeccapurple;
 }
-.reset {
+button {
   margin-right: 10px;
   margin-top: 10px;
   background-color: darkgoldenrod;
