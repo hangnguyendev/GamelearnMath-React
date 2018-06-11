@@ -6,14 +6,14 @@ class App extends React.Component {
     super();
     this.state = {
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      a: 10,
+      a: 9,
       random: 4,
       choosenumber: [],
       totalNumber: 4,
       choosednumber: [],
-      countReset: 0,
+      countReset: 5,
       time: {},
-      seconds: 30,
+      seconds: 11,
       start_game: false,
       reTime: 0,
       end_game: true
@@ -52,6 +52,15 @@ class App extends React.Component {
           <button onClick={this.restart}> RESTART GAME </button>
         </div>
       );
+    } else if (this.state.choosednumber.length === 9) {
+      return (
+        <div className="start_game">
+          <p>
+            <h1>Congratulation </h1>
+          </p>
+          <button onClick={this.restart}> RESTART GAME </button>
+        </div>
+      );
     }
   }
 
@@ -62,8 +71,9 @@ class App extends React.Component {
     this.setState({ choosednumber: [] });
     this.setState({ choosenumber: [] });
     this.timer = 0;
-    this.setState({ seconds: 5 });
+    this.setState({ seconds: 11 });
     this.startTimer();
+    this.setState({ countReset: 5 });
   }
 
   secondsToTime(secs) {
@@ -125,16 +135,20 @@ class App extends React.Component {
       this.setState({ totalNumber: total });
 
       if (this.state.random === total) {
-        const x = Math.floor(Math.random() * 10 + 1);
+        const x = Math.floor(Math.random() * 9 + 1);
         this.setState({ random: x });
         this.setState({ choosenumber: [] });
 
         clearInterval(this.timer);
 
         this.timer = 0;
-        this.setState({ seconds: 5 });
+        this.setState({ seconds: 11 });
 
         this.startTimer();
+        this.setState({ end_game: true });
+        if (this.state.choosednumber.length === 9) {
+          this.setState({ end_game: false });
+        }
       } else {
         clearInterval(this.timer);
         this.setState({ end_game: false });
@@ -149,16 +163,17 @@ class App extends React.Component {
 
   sumOfChooseNumeber() {}
 
-  onClickBtn(e) {
-    if (!e.target.value) return;
-    let number = parseInt(e.target.value);
+  onClickBtn = e => {
+    if (!e.target.value) return 0;
+    let number = Number(e.target.value);
     this.setState({ choosenumber: [...this.state.choosenumber, number] });
-
+    this.setState({ end_game: true });
     return 0;
-  }
+  };
 
   beginGame() {
     this.setState({ start_game: true });
+    this.setState({ end_game: true });
     return true;
   }
 
@@ -170,23 +185,28 @@ class App extends React.Component {
 
     console.log(choosenumber, ' rcountReset');
     this.setState({ choosenumber: choosenumber });
+    this.setState({ end_game: true });
 
     return 0;
   };
 
   resetRandom() {
-    if (this.state.countReset === 5) {
-      alert('you lose');
-    } else {
+    if (this.state.countReset > 0) {
+      this.setState({ choosenumber: [] });
       const x = Math.floor(Math.random() * 10 + 1);
       this.setState({ random: x });
-      this.setState({ countReset: this.state.countReset + 1 });
+      this.setState({ countReset: this.state.countReset - 1 });
       clearInterval(this.timer);
-      // this.setState({ choosednumber: [] });
+      this.setState({ end_game: true });
+
       // this.setState({ choosenumber: [] });
       this.timer = 0;
-      this.setState({ seconds: 5 });
+      this.setState({ seconds: 11 });
       this.startTimer();
+      // this.setState({ choosenumber: [] });
+    } else {
+      clearInterval(this.timer);
+      this.setState({ end_game: false });
     }
     return 0;
   }
@@ -219,6 +239,7 @@ class App extends React.Component {
             <div>
               {this.startTimer()}
               <button className="timer">Timer: {this.state.time.s}</button>
+              <button className="reset">Reset: {this.state.countReset}</button>
               <div className="left-content" id="left">
                 {this.printStar(this.state.random)}
               </div>
