@@ -1,0 +1,63 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  color: rgb(46, 34, 31);
+}
+.button-below {
+  margin-left: 20px;
+  /* margin-top: 10%; */
+  /* padding: 10px; */
+  font-size: 30px;
+}
+.button-below button {
+  padding: 10px;
+  margin-left: 20px;
+  font-size: 30px;
+}
+.content {
+  margin: 100px;
+  background-color: burlywood;
+  padding: 100px;
+  font-size: 60px;
+}
+.fa-star {
+  color: gold;
+  font-size: 60px;
+}
+.fa-spin {
+  font-size: 60px;
+}
+.center {
+  max-width: 50px;
+
+  margin: 30px;
+  margin-left: 50%;
+}
+.default {
+  border-radius: 5%;
+  color: darkmagenta;
+  background-color: rgb(230, 133, 22);
+  margin: 2%;
+}
+.left-content {
+  margin-left: 50px;
+  margin-top: 50px;
+}
+.right-content {
+  margin-left: 60%;
+
+  /* margin-top:150px; */
+}
+button {
+  margin-left: 10px;
+  margin-top: 10px;
+  background-color: darkgoldenrod;
+  color: rebeccapurple;
+}
+button {
+  margin-right: 10px;
+  margin-top: 10px;
+  background-color: darkgoldenrod;
+  color: rebeccapurple;
+}

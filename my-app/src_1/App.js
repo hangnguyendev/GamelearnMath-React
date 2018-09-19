@@ -1,34 +1,22 @@
 import React from 'react';
 import Button from '../src/components/Button';
-import { setCountReset } from '../src/redux/actions';
-import { getCountReset } from '../src/redux/actions';
-import { getChooseNumber } from '../src/redux/actions';
-import { setChooseNumber } from '../src/redux/actions';
-import PropTypes from 'prop-types';
-
-// import { getNumber } from '../src/redux/actions';
-import { connect } from 'react-redux';
-import resetNumber from './redux/reducers/resetNumber';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-
+      a: 9,
       random: 4,
       choosenumber: [],
       totalNumber: 4,
-      // choosednumber: [],
-      // countReset: 5,
+      choosednumber: [],
+      countReset: 5,
       time: {},
       seconds: 11,
       start_game: false,
       reTime: 0,
-      end_game: true,
-      error: null,
-      isLoaded: false,
-      items: []
+      end_game: true
     };
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
@@ -55,9 +43,6 @@ class App extends React.Component {
   }
 
   endGame() {
-    // if (!this.props.choosednumber) {
-    //   return;
-    // }
     if (this.state.end_game === false) {
       return (
         <div className="start_game">
@@ -67,7 +52,7 @@ class App extends React.Component {
           <button onClick={this.restart}> RESTART GAME </button>
         </div>
       );
-    } else if (this.props.choosedNumber.length === 9) {
+    } else if (this.state.choosednumber.length === 9) {
       clearInterval(this.timer);
       return (
         <div className="start_game">
@@ -89,11 +74,8 @@ class App extends React.Component {
     this.timer = 0;
     this.setState({ seconds: 11 });
     this.startTimer();
-    this.props.setCountReset();
-    this.props.setChooseNumber();
-
-    // { countReset: 5 }
-    // this.setState({ choosednumber: [] });
+    this.setState({ countReset: 5 });
+    this.setState({ choosednumber: [] });
     this.setState({ choosenumber: [] });
   }
 
@@ -117,20 +99,6 @@ class App extends React.Component {
   componentWillMount() {
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
-  }
-
-  componentDidMount() {
-    fetch('http://5b223119b968350014dcff8b.mockapi.io/api/ve/users')
-      .then(res => res.json())
-      .then(findresponse => {
-        console.log(findresponse);
-      });
-
-    // Note: it's important to handle errors here
-    // instead of a catch() block so that we don't swallow
-    // exceptions from actual bugs in components.
-
-    // console.log(result);
   }
 
   startTimer() {
@@ -161,8 +129,9 @@ class App extends React.Component {
   }
 
   handleClick() {
-    // const newNumber = this.state.choosenumber;
-    this.props.getChooseNumber(this.state.choosenumber);
+    this.setState({
+      choosednumber: [...this.state.choosednumber, ...this.state.choosenumber]
+    });
     if (this.state.choosenumber && this.state.choosenumber.length > 0) {
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       const total = this.state.choosenumber.reduce(reducer);
@@ -180,9 +149,7 @@ class App extends React.Component {
 
         this.startTimer();
         this.setState({ end_game: true });
-
-        console.log(this.props.choosedNumber, 'hjj');
-        if (this.props.choosedNumber.length === 9) {
+        if (this.state.choosednumber.length === 9) {
           this.setState({ end_game: false });
         }
       } else {
@@ -219,7 +186,7 @@ class App extends React.Component {
 
     choosenumber.splice(choosenumber.indexOf(Number(e.target.value)), 1);
 
-    // console.log(choosenumber, ' rcountReset');
+    console.log(choosenumber, ' rcountReset');
     this.setState({ choosenumber: choosenumber });
     this.setState({ end_game: true });
 
@@ -227,28 +194,23 @@ class App extends React.Component {
   };
 
   resetRandom() {
-    if (this.props.resetCount > 0) {
+    if (this.state.countReset > 0) {
       this.setState({ choosenumber: [] });
       const x = Math.floor(Math.random() * 10 + 1);
       this.setState({ random: x });
-
+      this.setState({ countReset: this.state.countReset - 1 });
       clearInterval(this.timer);
       this.setState({ end_game: true });
-      //state
-      // this.setState({ countReset: this.state.countReset - 1 });
+
       // this.setState({ choosenumber: [] });
       this.timer = 0;
       this.setState({ seconds: 11 });
       this.startTimer();
-      // this.props.getNumber();
-
-      this.props.getCountReset();
-      //dựa vào phần khai báo của mapDispatchToProps để truyền dữ liệu hay điều hướng dữ liệu, hiện tại thì không có dữ liệu nào được truyền vào store cả
+      // this.setState({ choosenumber: [] });
     } else {
       clearInterval(this.timer);
       this.setState({ end_game: false });
     }
-
     return 0;
   }
 
@@ -271,48 +233,7 @@ class App extends React.Component {
     );
   }
 
-  showBtn() {
-    if (!this.props.choosedNumber) {
-      return (
-        <div className="button-below">
-          {this.state.numbers.map((item, i) => (
-            <Button
-              className="btn"
-              value={item}
-              onClick={e => this.onClickBtn(e)}
-              name={item}
-              disableBtn={this.state.choosenumber.indexOf(item) !== -1}
-            />
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className="button-below">
-        {this.state.numbers.map((item, i) => (
-          <Button
-            className="btn"
-            value={item}
-            onClick={e => this.onClickBtn(e)}
-            name={item}
-            disableBtn={
-              this.state.choosenumber.indexOf(item) !== -1 ||
-              this.props.choosedNumber.indexOf(item) !== -1
-            }
-          />
-        ))}
-      </div>
-    );
-  }
-
   render() {
-    // console.log(items);
-    const { error, isLoaded, items } = this.state;
-    // if (error) {
-    //   return <div>Error: {error.message}</div>;
-    // } else if (!isLoaded) {
-    //   return <div>Loading...</div>;
-    // } else {
     return (
       <div className="content">
         {this.startGame()}
@@ -321,7 +242,7 @@ class App extends React.Component {
             <div>
               {this.startTimer()}
               <button className="timer">Timer: {this.state.time.s}</button>
-              <button className="reset">Reset: {this.props.resetCount}</button>
+              <button className="reset">Reset: {this.state.countReset}</button>
               <div className="left-content" id="left">
                 {this.printStar(this.state.random)}
               </div>
@@ -349,7 +270,7 @@ class App extends React.Component {
                     name={item}
                     disableBtn={
                       this.state.choosenumber.indexOf(item) !== -1 ||
-                      this.props.choosedNumber.indexOf(item) !== -1
+                      this.state.choosednumber.indexOf(item) !== -1
                     }
                   />
                 ))}
@@ -359,40 +280,7 @@ class App extends React.Component {
         {this.endGame()}
       </div>
     );
-    // return (
-    //   <div>
-    //     <ul>
-    //       {this.state.items.map((item, i) => (
-    //         <li>
-    //           {item.name} {item.avatar}
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   </div>
-    // );
   }
 }
-// }
-const mapStateToProps = state => {
-  return {
-    resetCount: state.resetNumber.resetCount,
-    choosedNumber: state.arrayNumber.arrchoosedNumber
-  };
-};
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setCountReset: () => dispatch(setCountReset()),
-    getCountReset: () => dispatch(getCountReset()),
-    // getNumber: () => dispatch(getNumber()),
-    getChooseNumber: ownProps => dispatch(getChooseNumber(ownProps)),
-    setChooseNumber: () => dispatch(setChooseNumber())
-  };
-};
-App.propTypes = {
-  choosedNumber: PropTypes.array
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App;

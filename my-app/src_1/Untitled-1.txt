@@ -1,0 +1,140 @@
+import React, { Component } from 'react';
+
+class App extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            a: 10,
+            random: 4,
+            choosenumber: [],
+            totalNumber: 4
+
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+        this.removeButton = this.removeButton.bind(this);
+        this.sumOfChooseNumeber = this.sumOfChooseNumeber.bind(this);
+        this.handleClick();
+    }
+
+    printStar = () => {
+        let stars = [];
+        for (let j = 0; j < this.state.random; j++) {
+            stars.push(<i className="fa fa-star fa-spin"></i>)
+        }
+        return stars;
+    }
+
+    handleClick() {
+
+        // this.setState({ totalNumber: this.state.choosenumber.reduce(this.getSum)});
+        // console.log(this.state.choosenumber);
+        // console.log(this.state.random);
+
+        if (this.state.random === this.state.totalNumber) {
+            if (this.state.choosenumber && this.state.choosenumber.length > 0) {
+                const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                const total = this.state.choosenumber.reduce(reducer);
+                // this.state.choosenumber =this.state.choosenumber.map(Number);
+                // const a=this.state.choosenumber.reduce(this.getSum);
+                // console.log(total);
+                this.setState({ totalNumber: total });
+                // setTimeout(() => {
+                //     this.setState({ totalNumber: total }, function() {
+                //         console.log(this.state.totalNumber, 'dealersOverallTotal1');
+                //     });
+                // }, 1)
+                //  setTimeout()
+
+                // console.log(this.state.choosenumber.length);
+
+            } else {
+                // this.state.choosenumber =this.state.choosenumber.map(Number);
+                const totalNumber = 0;
+                this.setState({ totalNumber: totalNumber });
+            }
+            // console.log(this.state.totalNumber);
+            const random = this.state.random;
+            const x = Math.floor((Math.random() * 10) + 1);
+            this.setState({ random: x });
+        } else {
+            alert("you lose")
+        }
+        // {this.printstar(random)};
+
+    }
+
+    sumOfChooseNumeber() {
+
+    }
+
+    onClickBtn = (e) => {
+
+        let number = parseInt(e.target.value);
+
+        // var btn = document.createElement("input");
+        // btn.type = "button";
+        // btn.value=number;
+        // console.log( btn.setAttribute("id",this.state.a));
+        // document.getElementById("right").appendChild(btn);
+        this.setState({ choosenumber: [...this.state.choosenumber, number] });
+        // this.setState({ totalNumber: choosenumber.reduce(getSum)});
+        // console.log(this.state.choosenumber,number);
+
+        return 0;
+    }
+
+    removeButton = (e) => {
+        // console.log(this.state.choosenumber);
+        let number = e.target.value;
+        // console.log(this.state.choosenumber);
+        let a = this.state.choosenumber.indexOf(number);
+        this.state.choosenumber.splice(a, 1);
+        this.setState({ choosenumber: this.state.choosenumber });
+
+    }
+
+    renderChooseButton() {
+        // console.log(this.state.choosenumber);
+        //   this.sumOfChooseNumeber();
+        return (
+            <div>
+                {this.state.choosenumber.map(item => {
+                    return <button type="button" className="btn btn-default" value={item} onClick={(e) => this.removeButton(e)}>{item}</button>
+                })}
+
+            </div>
+        );
+    }
+
+    render() {
+        console.log(this.state.totalNumber);
+        return (
+            <div>
+                <div className="left-content" id="left">
+                    {this.printStar(this.state.random)}
+                </div>
+
+                <div className="right-content" id="right">
+                    {this.renderChooseButton()}
+                </div>
+
+                <div className="center">
+                    <button className="btn default" onClick={this.handleClick}> = </button>
+                    <button className="btn default"> Reset </button>
+                </div>
+
+                <div className="button-below">
+                    {this.state.numbers.map((item, i) => (
+                        <button className="btn default" value={item} onClick={(e) => this.onClickBtn(e)}> {item} </button>
+                    ))}
+
+                </div>
+
+            </div>
+        )
+    }
+}
+
+export default App
